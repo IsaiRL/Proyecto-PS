@@ -7,12 +7,13 @@ import logging  #importando modulo para logs
 logging.basicConfig(filename='/home/uzielcv/Documentos/prograSegura/Proyecto-Final/monitoreo.log',filemode='a', format='%(asctime)s - (name)s - %(levelname)s - %(message)s')
 
 
+
 #se creo esta exepcion para que se lanze cada vez que se introdusca otra cosa que no sean los monitoreos
-class PalabraInvalidaException(Exception):
+class MyClassepalabraInvalidaException(Exception):
     pass
 
 #ayuda para ver como se usa
-def Ayuda():
+def ayuda():
 	print('ayuda para programa basico para monitoreo')
 	print('solo se cuentan con las opcciones de cpu , memoria y disco ')
 	print('disponible solo para linux')
@@ -22,7 +23,7 @@ def Ayuda():
 	print('python monitor.py cpu')
 	print('python monitor.py memoria')
 
-def Compara_palabra(text):
+def compara_palabra(text):
 # aqui se compran las palabras para que aun usando mayusculas funcione el monitoreo
 	string1=str('cpu')
 	string2=str('memoria')
@@ -38,26 +39,26 @@ def Compara_palabra(text):
 	if text.lower() == string4.lower():
 		return string4
 
-def UsoCPU():
+def uso_cpu():
 
 	#comando para obtener el porcentaje de cpu
-	Cpu=subprocess.getoutput("top -b -n1 | grep 'Cpu(s)'")
+	cpu=subprocess.getoutput("top -b -n1 | grep 'Cpu(s)'")
 	# devolvemos el % de uso
-	print (Cpu)
+	print (cpu)
 
-def UsoMemorias():
+def uso_memorias():
 
 	#comando para obtener porcentaje de memorias
-	Memorias=subprocess.getoutput("top -b -n1 | grep 'KiB Mem'")
+	memorias=subprocess.getoutput("top -b -n1 | grep 'KiB Mem'")
 	# devolvemos el uso de memorias
-	print (Memorias)
+	print (memorias)
 
-def UsoDisco():
+def uso_disco():
 
 	#comando para obtener porcentaje de discos
-	Disco=subprocess.getoutput("df -h -t ext4 --output=source,size,pcent")
+	disco=subprocess.getoutput("df -h -t ext4 --output=source,size,pcent")
 	#devolvemos el uso de disco
-	print (Disco)
+	print (disco)
 
 if __name__ == '__main__':
 
@@ -69,22 +70,22 @@ if __name__ == '__main__':
 
 
 	try:
-		palabra=Compara_palabra(accionM)
+		palabra=compara_palabra(accionM)
 		if palabra == 'cpu':
-			UsoCPU()
+			uso_cpu()
 		else:
 			if palabra == 'memoria':
-				UsoMemorias()
+				uso_memorias()
 			else:
 				if palabra == 'disco':
-					UsoDisco()
+					uso_disco()
 				else:
 					if palabra == 'ayuda':
-						Ayuda()
+						ayuda()
 					else :
-						raise PalabraInvalidaException('palabra no valida')
+						raise MyClassepalabraInvalidaException('palabra no valida')
 
-	except PalabraInvalidaException as error:
+	except MyClassepalabraInvalidaException as error:
 		logging.error('no son acciones validas',exc_info=True)
 	except Exception as error:
 		logging.error('algo salio mal',exc_info=True)
